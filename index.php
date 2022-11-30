@@ -14,7 +14,7 @@ interface MachineInterface
 abstract class Machine implements MachineInterface
 {
     
-    public $machineType;
+    protected $machineType;
 
     public function goForward ()
     {
@@ -28,7 +28,7 @@ abstract class Machine implements MachineInterface
 
     public function signal ()
     {
-        echo $this->machineType . " сигналит." . "\n";  
+	    echo $this->machineType . " сигналит." . "\n";  
     }
 
     abstract public function specialBehavior ();
@@ -38,20 +38,20 @@ abstract class Machine implements MachineInterface
 
 class Motorcar extends Machine
 {
-    public $machineType = "Легковой автомобиль";
-    
-    public $specialTrait = "Цвет";
-    //индивидуальные особенности для каждого класса задаются с помощью сеттеров
+    protected $machineType = "Легковой автомобиль";
+    //индивидуальная особенность
+    public const specialTrait = "Цвет";
+    //значения индивидуальных особенностей задаются с помощью сеттеров
     private $specialTrait_color = "зеленый"; 
 
     public function getColor ()
     {
-        return $this->specialTrait_color . "\n";
+	    return $this->specialTrait_color . "\n";
     }
 
     public function setColor (string $specialTrait_color)
     {
-        $this->specialTrait_color = $specialTrait_color;
+	    $this->specialTrait_color = $specialTrait_color;
     }
 
     //особенное поведение для каждого класса
@@ -68,20 +68,20 @@ class Motorcar extends Machine
 
 class Bulldozer extends Machine
 {
-    public $machineType = "Бульдозер";
+    protected $machineType = "Бульдозер";
 
-    public $specialTrait = "Марка";
+    public const specialTrait = "Марка";
 
     private $specialTrait_brand = "Hitachi"; 
 
     public function getBrand ()
     {
-        return $this->specialTrait_brand . "\n";
+	    return $this->specialTrait_brand . "\n";
     }
 
     public function setBrand (string $specialTrait_brand)
     {
-        $this->specialTrait_brand = $specialTrait_brand;
+	    $this->specialTrait_brand = $specialTrait_brand;
     }
 
     public function specialBehavior () 
@@ -89,25 +89,30 @@ class Bulldozer extends Machine
 	    echo $this->machineType . " двигает ковшом!" . "\n";
     }
 
+  public function activateWipers () 
+    {
+	    echo $this->machineType . " включил дворники!" . "\n";
+    }
+
 }
 
 
 class Truck extends Machine
 {
-    public $machineType = "Грузовик";
+    protected $machineType = "Грузовик";
 
-    public $specialTrait = "Грузоподъемность в тоннах";
+    public const specialTrait = "Грузоподъемность в тоннах";
 
     private $specialTrait_tonnage = 8; 
 
     public function getTonnage ()
     {
-        return $this->specialTrait_tonnage . "\n";
+	    return $this->specialTrait_tonnage . "\n";
     }
 
     public function setTonnage (float $specialTrait_tonnage)
     {
-        $this->specialTrait_tonnage = $specialTrait_tonnage;
+	    $this->specialTrait_tonnage = $specialTrait_tonnage;
     }
 
 
@@ -125,20 +130,20 @@ class Truck extends Machine
 
 class Tractor extends Machine
 {
-    public $machineType = "Трактор";
+    protected $machineType = "Трактор";
 
-    public $specialTrait = "Двигатель";
+    public const specialTrait = "Двигатель";
 
     private $specialTrait_engine = "Kubota"; 
 
     public function getEngine ()
     {
-        return $this->specialTrait_engine . "\n";
+	    return $this->specialTrait_engine . "\n";
     }
 
     public function setEngine (string $specialTrait_engine)
     {
-        $this->specialTrait_engine = $specialTrait_engine;
+	    $this->specialTrait_engine = $specialTrait_engine;
     }
 
     public function specialBehavior () 
@@ -146,24 +151,29 @@ class Tractor extends Machine
 	    echo $this->machineType . " начал обработку поля!" . "\n";
     }
 
+  public function activateWipers () 
+    {
+	    echo $this->machineType . " включил дворники!" . "\n";
+    }
+
 }
 
 class Tank extends Machine
 {
-    public $machineType = "Танк";
+    protected $machineType = "Танк";
 
-    public $specialTrait = "Оружие";
+    public const specialTrait = "Оружие";
 
     private $specialTrait_weapon = "2А46"; 
 
     public function getWeapon ()
     {
-        return $this->specialTrait_weapon . "\n";
+	    return $this->specialTrait_weapon . "\n";
     }
 
     public function setWeapon (string $specialTrait_weapon)
     {
-        $this->specialTrait_weapon = $specialTrait_weapon;
+	    $this->specialTrait_weapon = $specialTrait_weapon;
     }
 
     public function specialBehavior () 
@@ -173,13 +183,14 @@ class Tank extends Machine
 
 }
 
-$machine_1 = new Truck();
-
+//полиморфная функция
 function operateMachine (Machine $machine) 
 {
     $machine->goForward();
     $machine->specialBehavior();
 }
+
+$machine_1 = new Motorcar();
 
 operateMachine ($machine_1);
 
@@ -187,10 +198,14 @@ $machine_2 = new Bulldozer();
 
 operateMachine ($machine_2);
 
-$mm = new Tractor();
+$machine_3 = new Tank();
 
-echo $mm->specialTrait . " - " . $mm->getEngine();
+operateMachine ($machine_3);
 
-echo $machine_1->activateWipers();
+$machine_1->activateWipers();
+
+echo $machine_1::specialTrait . " - " . $machine_1->getColor();
+$machine_1->setColor("красный");
+echo $machine_1::specialTrait . " - " . $machine_1->getColor();
 
 ?>
