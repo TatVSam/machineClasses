@@ -204,8 +204,11 @@ operateMachine ($machine_3);
 
 $machine_1->activateWipers();
 
+$machine_2->signal();
+
 echo $machine_1::specialTrait . " - " . $machine_1->getColor();
 $machine_1->setColor("красный");
 echo $machine_1::specialTrait . " - " . $machine_1->getColor();
+
 
 ?>
